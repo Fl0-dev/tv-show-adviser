@@ -1,3 +1,5 @@
+import "./global.css";
+import s from "./App.module.css";
 export function App() {
   return (
     <div>
