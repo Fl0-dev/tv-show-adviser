@@ -8,6 +8,7 @@ import { Logo } from "./components/Logo/Logo";
 import logo from "./assets/images/logo.png";
 import { TVShowListItem } from "./components/TVShowListItem/TVShowListItem";
 import { TVShowList } from "./components/TVShowList/TVShowList";
+import { SearchBar } from "./components/SearchBar/SearchBar";
 
 export function App() {
   const [currentTVShow, setCurrentTVShow] = useState();
@@ -32,14 +33,18 @@ export function App() {
   }
 
   useEffect(() => {
-    if(currentTVShow) {
+    if (currentTVShow) {
       fetchRecommendations(currentTVShow.id);
     }
   }, [currentTVShow]);
 
-  function setCurrentTvShowFromRecommendation(tvShow) {
-    alert("You clicked on " + tvShow.name);
-  }
+  async function searchTvShowByName(tvShowName) {
+    const searchResponse = await TVShowApi.fetchSearchByTitle(tvShowName);
+    console.log("searchResponse", searchResponse)
+      if (searchResponse.length > 0) {
+        setCurrentTVShow(searchResponse[0]);
+      }
+    };
 
   return (
     <div className={s.main_container}
@@ -55,7 +60,7 @@ export function App() {
             <Logo image={logo} title="TV Show" subtitle="Search Engine" />
           </div>
           <div className="col-sm-12 col-md-4">
-            <input type="text" style={{ width: "100%" }} />
+            <SearchBar onSubmit={searchTvShowByName} />
           </div>
         </div>
       </div>
