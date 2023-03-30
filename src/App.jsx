@@ -64,7 +64,7 @@ export function App() {
       </div>
       <div className={s.recommended_shows}>
         {recommendedTVShows && recommendedTVShows.length > 0 && (
-          <TVShowList tvShowList={recommendedTVShows} />
+          <TVShowList onClickItem={setCurrentTVShow} tvShowList={recommendedTVShows} />
         )}
       </div>
     </div>
