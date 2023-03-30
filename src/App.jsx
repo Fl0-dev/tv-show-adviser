@@ -6,7 +6,6 @@ import { BACKDROP_URL } from "./config";
 import { TVShowDetail } from "./components/TVShowDetail/TVShowDetail";
 import { Logo } from "./components/Logo/Logo";
 import logo from "./assets/images/logo.png";
-import { TVShowListItem } from "./components/TVShowListItem/TVShowListItem";
 import { TVShowList } from "./components/TVShowList/TVShowList";
 import { SearchBar } from "./components/SearchBar/SearchBar";
 
@@ -15,9 +14,14 @@ export function App() {
   const [recommendedTVShows, setRecommendedTVShows] = useState([]);
 
   async function fetchPopulars() {
-    const populars = await TVShowApi.fetchPopulars();
-    if (populars.length > 0) {
-      setCurrentTVShow(populars[0]);
+    try {
+      const populars = await TVShowApi.fetchPopulars();
+      if (populars.length > 0) {
+        setCurrentTVShow(populars[0]);
+      }
+    } catch (e) {
+      console.log(e);
+      alert("Something went wrong, please try again later")
     }
   }
 
@@ -26,9 +30,14 @@ export function App() {
   }, []);
 
   async function fetchRecommendations(tvShowId) {
-    const recommendations = await TVShowApi.fetchRecommendations(tvShowId);
-    if (recommendations.length > 0) {
-      setRecommendedTVShows(recommendations.slice(0, 10));
+    try {
+      const recommendations = await TVShowApi.fetchRecommendations(tvShowId);
+      if (recommendations.length > 0) {
+        setRecommendedTVShows(recommendations.slice(0, 10));
+      }
+    } catch (e) {
+      console.log(e);
+      alert("Something went wrong, please try again later")
     }
   }
 
@@ -39,12 +48,16 @@ export function App() {
   }, [currentTVShow]);
 
   async function searchTvShowByName(tvShowName) {
-    const searchResponse = await TVShowApi.fetchSearchByTitle(tvShowName);
-    console.log("searchResponse", searchResponse)
+    try {
+      const searchResponse = await TVShowApi.fetchSearchByTitle(tvShowName);
       if (searchResponse.length > 0) {
         setCurrentTVShow(searchResponse[0]);
       }
-    };
+    } catch (e) {
+      console.log(e);
+      alert("Something went wrong, please try again later")
+    }
+  };
 
   return (
     <div className={s.main_container}
